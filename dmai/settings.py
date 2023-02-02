@@ -27,7 +27,8 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
-CSRF_TRUSTED_ORIGINS = ['https://dawamkononi.up.railway.app']
+if not DEBUG:
+    CSRF_TRUSTED_ORIGINS = ['https://dawamkononi.up.railway.app']
 
 
 # Application definition
