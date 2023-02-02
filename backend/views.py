@@ -124,7 +124,7 @@ class DataInferenceAPIView(APIView):
 
                 return Response({'inference_label':inference_label, 'inference_probas':inference_results_df_probas, 'text':inference_text}, status = 201)
             else:
-                return Response("Minimum observations suported is 20. Increase your observations.", status = 201)
+                return Response("Minimum previous purchases suported is 20. Increase your observations.", status = 201)
         return Response(serializer.errors, status = 400)
 
 class InferenceAPIView(APIView):
@@ -246,7 +246,7 @@ def prediction(request):
 
                     return render(request,template_name='pages/index.html', context=context)
                 else:
-                    format_message = "Minimum observations suported is 20. Increase your observations"
+                    format_message = "Minimum purchases suported is 20. Increase your observations"
                     return render(request,template_name='pages/index.html', context={'data_form':data_form, 'format_message':format_message})
         else:
             return render(request,template_name='pages/index.html', context={'data_form':data_form})
