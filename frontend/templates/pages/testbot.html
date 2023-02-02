@@ -1,0 +1,55 @@
+{% load static%}
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="{% static 'frameworks/bootstrap/dist/css/bootstrap.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'frameworks/bootstrap/dist/css/bootstrap.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'frameworks/front-awesome/css/front-awesome.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/cssbot.css' %}">
+</head>
+
+<div class="col-md-6 col-md-offset-3" style="margin-top:150">
+
+    <div class="panel panel-danger">
+        <div class="panel-heading">
+            <p class="text-center h3">Dawa Mkononi Testbot</p>
+        </div>
+        <div class="panel-body">
+            <div>
+                <form method="POST" action="{% url 'testbot:letschat' %}">
+                {% csrf_token %}
+                {% if query_sentence %}
+                <ol class="chat">
+                      <li class="other">
+                            <div class="avatar"><img src="{% static 'images/user.png'%}" draggable="false"/></div>
+                            <div class="msg">
+                            <p>{{ query_sentence }}</p>
+                              <time>{{ sent_time }}</time>
+                            </div>
+                      </li>
+                      <li class="self">
+                            <div class="avatar"><img src="{% static 'images/bot.png'%}" draggable="false"/></div>
+                            <div class="msg">
+                            <p>{{ bot_response }}</p>
+                              <time>{{ response_time }}</time>
+                            </div>
+                      </li>
+                </ol>
+            {% endif %}
+            <!-- <input class="textarea" type="text" placeholder="Type here!"/> -->
+            {{ testbot_form.input_field }}
+            <div class="emojis"></div>
+            <hr>
+            <div>
+                <a class="btn btn-warning pull-left" href="{% url 'frontend:index' %}">Back to Predictor</a>
+                <button class="btn btn-info pull-right"  type="submit">Send</button>
+            </div>
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+    </html>

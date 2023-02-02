@@ -18,9 +18,11 @@ from django.urls import path,include
 
 from backend import urls as backend_urls
 from frontend import urls as frontend_urls
+from testbot import urls as testbot_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('endpoints/', include(backend_urls)),
+    path('testbot/', include(testbot_urls)),
     path('', include(frontend_urls))
 ]
