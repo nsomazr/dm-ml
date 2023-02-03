@@ -13,7 +13,7 @@
         <div class="panel-heading">
             <p class="text-center h3">Demo Chatbot</p>
         </div>
-        <div class="panel-body" style="height:600; overflow-y: scroll; z-index:0;">
+        <div class="panel-body" style="height:600; overflow-y: scroll;">
             <div>
                 <form method="POST" action="{% url 'testbot:letschat' %}">
                 {% csrf_token %}
@@ -43,7 +43,7 @@
             <!-- <input class="textarea" type="text" placeholder="Type here!"/> -->
             {{ testbot_form.input_field }}
             <hr>
-            <div style="z-index: 99;">
+            <div">
                 <a class="btn btn-warning pull-left" href="{% url 'frontend:index' %}">Back to Predictor</a>
                 <button class="btn btn-info pull-right"  type="submit">Send</button>
             </div>
