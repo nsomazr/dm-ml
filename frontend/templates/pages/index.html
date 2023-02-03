@@ -32,10 +32,10 @@
                <form role="form" method="POST" action="{% url 'backend:predict' %}" enctype="multipart/form-data">
                 {% csrf_token %}
                    <div class="row">
-                       <div class="col-md-6 col-md-offset-1 col-sm-12"><br>
+                       <div class="col-md-6 col-md-offset-1 col-sm-12"><br><br>
                         {{ data_form.filename }}
                            <!-- <input type="file" name="file" class="form-control"> -->
-                       </div><br>
+                       </div><br><br>
                        <div class="col-md-4 col-sm-12">
                            <button class="btn btn-primary" type="submit">Predict</button>
                            <a class="btn btn-success" href="{% url 'backend:inference-api' %}">API Endpoints</a>
