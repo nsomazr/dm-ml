@@ -19,18 +19,18 @@
                 {% csrf_token %}
                 {% for c in chats %}
                 <ol class="chat">
-                    {% if c.is_bot == 0 %}
+                    {% if c.is_bot == 1 %}
                       <li class="other">
-                            <div class="avatar"><img src="{% static 'images/user.png'%}" draggable="false"/></div>
+                            <div class="avatar"><img src="{% static 'images/bot.png'%}" draggable="false"/></div>
                             <div class="msg">
                             <p>{{ c.text }}</p>
                               <time>{{ c.created_at }}</time>
                             </div>
                       </li>
                       {% endif %}
-                      {% if c.is_bot == 1 %}
+                      {% if c.is_bot == 0 %}
                       <li class="self">
-                            <div class="avatar"><img src="{% static 'images/bot.png'%}" draggable="false"/></div>
+                            <div class="avatar"><img src="{% static 'images/user.png'%}" draggable="false"/></div>
                             <div class="msg">
                             <p>{{ c.text }}</p>
                               <time>{{ c.created_at }}</time>
