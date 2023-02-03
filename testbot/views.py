@@ -7,6 +7,7 @@ from .forms import TestbotForm
 import numpy as np
 import random
 import json
+from .models import Testbot
 from django.utils import timezone
 import nltk
 import torch
@@ -50,6 +51,7 @@ class TestbotAPIView(APIView):
         return Response(serializer.errors, status = 400)
 
     def testbot(request):
+        Testbot.objects.all().delete()
         testbot_form = TestbotForm()
         return render(request, template_name='pages/testbot.html', context={'testbot_form':testbot_form})
 
@@ -97,15 +99,15 @@ def convo(request):
 
     if request.method == 'POST':
 
-            print("Enter form")
-
-            sent_time = timezone.now
-
             testbot_form = TestbotForm(request.POST)
 
             if testbot_form.is_valid():
 
                 sentence = request.POST['input_field']
+
+                new_chat = Testbot(is_bot=0, text=sentence)
+
+                new_chat.save()
 
                 sentence_token = nltk.word_tokenize(sentence)
                 X = bag_of_words(sentence_token, all_words)
@@ -117,7 +119,6 @@ def convo(request):
 
                 tag = tags[predicted.item()]
 
-
                 # bot_response = None
                 probs = torch.softmax(output, dim=1)
                 prob = probs[0][predicted.item()]
@@ -125,16 +126,22 @@ def convo(request):
                     for intent in intents['intents']:
                         if tag == intent["tag"]:
                             bot_response = random.choice(intent['response'])
+                            new_chat = Testbot(is_bot=1, text=bot_response)
+                            new_chat.save()
+                            chats = Testbot.objects.all()
                             testbot_form = TestbotForm()
-                            return render(request, template_name='pages/testbot.html', context={'testbot_form':testbot_form,'query_sentence':sentence, 'bot_response':bot_response,'sent_time':sent_time})
+                            return render(request, template_name='pages/testbot.html', context={'testbot_form':testbot_form,'chats':chats})
                 else:
                     bot_response = 'I do not understand...'
+                    new_chat = Testbot(is_bot=1, text=bot_response)
+                    new_chat.save()
+                    chats = Testbot.objects.all()
                     testbot_form = TestbotForm()
-                    return render(request, template_name='pages/testbot.html', context={'testbot_form':testbot_form,'query_sentence':sentence, 'bot_response':bot_response, 'response_time':timezone.now})
+                    return render(request, template_name='pages/testbot.html', context={'testbot_form':testbot_form,'chats':chats})
 
             else:
                  print(testbot_form.errors.as_data()) # here you print errors to terminal
-
+    Testbot.objects.all().delete()
     testbot_form = TestbotForm()
     return render(request, template_name='pages/testbot.html', context={'testbot_form':testbot_form})
 

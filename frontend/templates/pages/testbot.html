@@ -7,39 +7,43 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'css/cssbot.css' %}">
 </head>
 
-<div class="col-md-6 col-md-offset-3" style="margin-top:150">
+<div class="col-md-4 col-md-offset-4 col-sm-12" style="margin-top:150">
 
-    <div class="panel panel-danger">
+    <div class="panel panel-primary">
         <div class="panel-heading">
-            <p class="text-center h3">Dawa Mkononi Testbot</p>
+            <p class="text-center h3">Demo Chatbot</p>
         </div>
-        <div class="panel-body">
+        <div class="panel-body" style="height: 600; overflow-y: scroll; z-index: 0;">
             <div>
                 <form method="POST" action="{% url 'testbot:letschat' %}">
                 {% csrf_token %}
-                {% if query_sentence %}
+                {% for c in chats %}
                 <ol class="chat">
+                    {% if c.is_bot == 0 %}
                       <li class="other">
                             <div class="avatar"><img src="{% static 'images/user.png'%}" draggable="false"/></div>
                             <div class="msg">
-                            <p>{{ query_sentence }}</p>
-                              <time>{{ sent_time }}</time>
+                            <p>{{ c.text }}</p>
+                              <time>{{ c.created_at }}</time>
                             </div>
                       </li>
+                      {% endif %}
+                      {% if c.is_bot == 1 %}
                       <li class="self">
                             <div class="avatar"><img src="{% static 'images/bot.png'%}" draggable="false"/></div>
                             <div class="msg">
-                            <p>{{ bot_response }}</p>
-                              <time>{{ response_time }}</time>
+                            <p>{{ c.text }}</p>
+                              <time>{{ c.created_at }}</time>
                             </div>
                       </li>
+                      {% endif %}
                 </ol>
-            {% endif %}
+            {% endfor %}
+            <hr>
             <!-- <input class="textarea" type="text" placeholder="Type here!"/> -->
             {{ testbot_form.input_field }}
-            <div class="emojis"></div>
             <hr>
-            <div>
+            <div style="z-index: 99;">
                 <a class="btn btn-warning pull-left" href="{% url 'frontend:index' %}">Back to Predictor</a>
                 <button class="btn btn-info pull-right"  type="submit">Send</button>
             </div>

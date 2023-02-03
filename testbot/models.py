@@ -4,5 +4,7 @@ from django.db import models
 
 class Testbot(models.Model):
     pass
-    # text_id = models.AutoField(primary_key=True)
-    # created_at = models.DateTimeField(auto_now_add=True)
+    text_id = models.AutoField(primary_key=True)
+    is_bot = models.IntegerField()
+    text = models.CharField(max_length=200,null=False, blank=False)
+    created_at = models.DateTimeField(auto_now_add=True)
