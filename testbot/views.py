@@ -7,7 +7,7 @@ from .forms import TestbotForm
 import numpy as np
 import random
 import json
-from .models import Testbot
+from .models import Testbot, CollectData
 from django.utils import timezone
 import nltk
 import torch
@@ -106,8 +106,9 @@ def convo(request):
                 sentence = request.POST['input_field']
 
                 new_chat = Testbot(is_bot=0, text=sentence)
-
                 new_chat.save()
+                new_chat_data = CollectData(is_bot=0, text=bot_response)
+                new_chat_data.save()
 
                 sentence_token = nltk.word_tokenize(sentence)
                 X = bag_of_words(sentence_token, all_words)
@@ -128,6 +129,8 @@ def convo(request):
                             bot_response = random.choice(intent['response'])
                             new_chat = Testbot(is_bot=1, text=bot_response)
                             new_chat.save()
+                            new_chat_data = CollectData(is_bot=1, text=bot_response)
+                            new_chat_data.save()
                             chats = Testbot.objects.all()
                             testbot_form = TestbotForm()
                             return render(request, template_name='pages/testbot.html', context={'testbot_form':testbot_form,'chats':chats})
@@ -135,6 +138,8 @@ def convo(request):
                     bot_response = 'I do not understand...'
                     new_chat = Testbot(is_bot=1, text=bot_response)
                     new_chat.save()
+                    new_chat_data = CollectData(is_bot=1, text=bot_response)
+                    new_chat_data.save()
                     chats = Testbot.objects.all()
                     testbot_form = TestbotForm()
                     return render(request, template_name='pages/testbot.html', context={'testbot_form':testbot_form,'chats':chats})
